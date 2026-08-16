@@ -1,0 +1,54 @@
+name: noor_vpn
+description: "Noor VPN - Fast, secure & elegant VPN"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  # Ads (monetization)
+  google_mobile_ads: ^5.1.0
+
+  # Animation & UI polish
+  google_fonts: ^6.2.1
+  flutter_animate: ^4.5.0
+  shimmer: ^3.0.0
+  lottie: ^3.1.2
+
+  # State management (simple, beginner friendly)
+  provider: ^6.1.2
+
+  # Local storage (settings, selected server)
+  shared_preferences: ^2.2.3
+
+  # VPN tunnel (WireGuard). NOTE: you must add this plugin
+  # and follow its native Android setup steps (see README step 4).
+  wireguard_flutter: ^0.2.9
+
+  # Google Sign-In (login screen) — requires Firebase/Google Cloud OAuth
+  # setup, see README Step 7.
+  google_sign_in: ^6.2.1
+
+  # Premium subscriptions via Google Play Billing — required by Play
+  # Store policy for any digital-good subscription, see README Step 8.
+  in_app_purchase: ^3.2.0
+
+  # Networking (fetch server list / ping)
+  http: ^1.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/lottie/
+    - assets/flags/
