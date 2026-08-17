@@ -41,18 +41,37 @@ dependencies:
   # Networking (fetch server list / ping)
   http: ^1.2.1
 
+  # Opens mailto: links (Contact Support) and external URLs
+  url_launcher: ^6.3.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.10
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    
+
+# App launcher icon (what shows on the phone home screen)
 flutter_launcher_icons:
   android: true
   image_path: "assets/images/app_logo.png"
   min_sdk_android: 21
+  # Without this, Android generates a WHITE background behind the icon
+  # on Android 8+ (adaptive icons) — this was the white square you saw.
+  adaptive_icon_background: "#060B18"
+  adaptive_icon_foreground: "assets/images/app_logo.png"
+
+# Native splash screen (shows for a split second BEFORE Flutter loads,
+# separate from our custom animated SplashScreen widget in lib/screens).
+# Without this config, Android shows its own default WHITE screen here.
+flutter_native_splash:
+  color: "#060B18"
+  image: assets/images/app_logo.png
+  android_12:
+    color: "#060B18"
+    image: assets/images/app_logo.png
