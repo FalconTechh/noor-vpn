@@ -15,7 +15,7 @@
              before release. Using the demo ID will fail policy review. -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-1204277984886258~7073326723" />
 
         <activity
             android:name=".MainActivity"
