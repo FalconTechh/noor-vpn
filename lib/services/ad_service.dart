@@ -17,10 +17,9 @@ class AdService {
   static final AdService instance = AdService._();
 
   // TEST IDs — replace before release. See README "Step 5: AdMob".
-  static const String bannerAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
-  static const String interstitialAdUnitId = 'ca-app-pub-3940256099942544/1033173712';
-  static const String rewardedAdUnitId = 'ca-app-pub-3940256099942544/5224354917';
-
+  static const String bannerAdUnitId = 'ca-app-pub-1204277984886258/1795436540';
+  static const String interstitialAdUnitId = 'ca-app-pub-1204277984886258/3459821676';
+  static const String rewardedAdUnitId = 'ca-app-pub-1204277984886258/9833658335';
   InterstitialAd? _interstitialAd;
   RewardedAd? _rewardedAd;
 
