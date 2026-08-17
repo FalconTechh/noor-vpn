@@ -28,7 +28,7 @@ dependencies:
 
   # VPN tunnel (WireGuard). NOTE: you must add this plugin
   # and follow its native Android setup steps (see README step 4).
-  wireguard_flutter: ^0.2.9
+  wireguard_flutter: ^0.1.3
 
   # Google Sign-In (login screen) — requires Firebase/Google Cloud OAuth
   # setup, see README Step 7.
