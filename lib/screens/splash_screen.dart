@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import 'login_screen.dart';
 
+/// Splash screen — logo already contains the full "NoorVPN" wordmark and
+/// tagline baked into the image, so we don't repeat text below it (that
+/// looked duplicated/unprofessional). Just a clean animated glow entrance.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -11,28 +13,33 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
+    with TickerProviderStateMixin {
+  late final AnimationController _entrance;
+  late final AnimationController _pulse;
   late final Animation<double> _scale;
   late final Animation<double> _opacity;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _entrance = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1400),
+      duration: const Duration(milliseconds: 1100),
     );
-    _scale = Tween<double>(begin: 0.75, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
+    _pulse = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1600),
+    )..repeat(reverse: true);
+
+    _scale = Tween<double>(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: _entrance, curve: Curves.easeOutBack),
     );
     _opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-          parent: _controller, curve: const Interval(0.0, 0.6)),
+      CurvedAnimation(parent: _entrance, curve: const Interval(0.0, 0.7)),
     );
-    _controller.forward();
+    _entrance.forward();
 
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    Future.delayed(const Duration(milliseconds: 2200), () {
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
@@ -47,75 +54,50 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _entrance.dispose();
+    _pulse.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.midnight,
       body: Container(
         decoration: const BoxDecoration(gradient: AppTheme.nightSky),
         child: Center(
           child: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) => Opacity(
-              opacity: _opacity.value,
-              child: Transform.scale(scale: _scale.value, child: child),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 140,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.cyanGlow.withOpacity(0.5),
-                        blurRadius: 40,
-                        spreadRadius: 6,
+            animation: Listenable.merge([_entrance, _pulse]),
+            builder: (context, child) {
+              final glow = 0.35 + (_pulse.value * 0.25);
+              return Opacity(
+                opacity: _opacity.value,
+                child: Transform.scale(
+                  scale: _scale.value,
+                  child: Container(
+                    width: 176,
+                    height: 176,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.cyanGlow.withOpacity(glow),
+                          blurRadius: 50,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: Image.asset(
+                        'assets/images/app_logo.png',
+                        fit: BoxFit.cover,
                       ),
-                    ],
-                  ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/app_logo.png',
-                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
-                RichText(
-                  text: TextSpan(
-                    style: GoogleFonts.cairo(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: 'Noor',
-                        style: TextStyle(color: AppColors.silver),
-                      ),
-                      TextSpan(
-                        text: 'VPN',
-                        style: TextStyle(color: AppColors.cyanGlow),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'FAST · SECURE · PRIVATE',
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    letterSpacing: 3,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ),
