@@ -61,10 +61,8 @@ flutter_launcher_icons:
   android: true
   image_path: "assets/images/app_logo.png"
   min_sdk_android: 21
-  # Without this, Android generates a WHITE background behind the icon
-  # on Android 8+ (adaptive icons) — this was the white square you saw.
   adaptive_icon_background: "#060B18"
-  adaptive_icon_foreground: "assets/images/app_logo.png"
+  adaptive_icon_foreground: "assets/images/app_icon_adaptive.png"
 
 # Native splash screen (shows for a split second BEFORE Flutter loads,
 # separate from our custom animated SplashScreen widget in lib/screens).
