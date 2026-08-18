@@ -2,13 +2,6 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'login_screen.dart';
 
-/// Splash screen — logo already contains the full "NoorVPN" wordmark and
-/// tagline baked into the image, so we don't repeat text below it.
-/// Uses BoxFit.contain (never crops) with an animated entrance + pulsing
-/// glow. Note: this animated screen only appears AFTER the Flutter engine
-/// loads — the very first frame (Android's native splash, before that)
-/// is necessarily a single static image; no app can animate that part,
-/// it's an Android platform limitation.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
