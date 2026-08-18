@@ -46,11 +46,18 @@
             android:value="2" />
     </application>
 
-    <!-- Required to query the VpnService on some Android versions -->
+    <!-- Required to query the VpnService, email apps, and browser on Android 11+ -->
     <queries>
         <intent>
             <action android:name="android.net.VpnService" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
     </queries>
-
 </manifest>
