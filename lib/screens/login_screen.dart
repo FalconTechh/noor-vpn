@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../theme/app_theme.dart';
 import 'home_screen.dart';
 
-/// Login screen — Google Sign-In only, PLUS a mandatory "Continue as Guest"
+/// Login screen — real Google Sign-In, PLUS a mandatory "Continue as Guest"
 /// option.
 ///
 /// ⚠️ Play Store policy note: Google requires that login NEVER be forced
@@ -20,21 +21,37 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _loading = false;
+  String? _errorMessage;
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email'],
+  );
 
   Future<void> _signInWithGoogle() async {
-    setState(() => _loading = true);
-    // TODO: wire up real Google Sign-In here. Steps:
-    // 1. Add `google_sign_in: ^6.2.1` to pubspec.yaml
-    // 2. Create a Firebase project (or use Google Cloud OAuth client directly)
-    // 3. Register your app's SHA-1 fingerprint (Codemagic gives you this
-    //    under Code signing, or run `keytool -list -v` on your keystore)
-    // 4. final googleUser = await GoogleSignIn().signIn();
-    //    final googleAuth = await googleUser?.authentication;
-    //    -> use googleAuth.idToken with your backend or Firebase Auth
-    await Future.delayed(const Duration(milliseconds: 900)); // simulate
-    if (!mounted) return;
-    setState(() => _loading = false);
-    _goHome();
+    setState(() {
+      _loading = true;
+      _errorMessage = null;
+    });
+    try {
+      final account = await _googleSignIn.signIn();
+      if (account == null) {
+        // User cancelled the picker — not an error, just stop loading.
+        setState(() => _loading = false);
+        return;
+      }
+      // Signed in successfully. account.email / account.displayName /
+      // account.photoUrl are now available if you want to show them
+      // elsewhere in the app (e.g. a profile section in Settings).
+      if (!mounted) return;
+      setState(() => _loading = false);
+      _goHome();
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _errorMessage = 'Sign-in failed. Please try again.';
+      });
+    }
   }
 
   void _goHome() {
@@ -85,11 +102,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const Spacer(flex: 2),
 
-                // Google Sign-In button — follows Google's branding
-                // guidelines (white pill, official 4-color G logo, "Continue
-                // with Google" copy). Do not restyle this — Google's
-                // Identity Services policy requires the button to look
-                // like this.
+                if (_errorMessage != null) ...[
+                  Text(
+                    _errorMessage!,
+                    style: GoogleFonts.inter(color: AppColors.redAlert, fontSize: 12.5),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -140,9 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 18),
 
-                // Mandatory guest path — keeps app Play Store policy safe.
                 TextButton(
-                  onPressed: _goHome,
+                  onPressed: _loading ? null : _goHome,
                   child: Text(
                     'Continue as Guest',
                     style: GoogleFonts.inter(
