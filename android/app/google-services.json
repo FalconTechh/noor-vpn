@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "166970732326",
+    "project_id": "noor-vpn-41225",
+    "storage_bucket": "noor-vpn-41225.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166970732326:android:f28b8efb05b19fdb4b1be7",
+        "android_client_info": {
+          "package_name": "app.noorvpn.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "166970732326-h1d4649fm3vhkbmbva7544ecvf5dpksf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.noorvpn.android",
+            "certificate_hash": "19509dde00c95e129717f50a384ed1490c190254"
+          }
+        },
+        {
+          "client_id": "166970732326-gmuj741b2usmucrdbpl0klr8fqj2drke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkZCxc3F1F0LZyZXMw7bB6D1J1GmaY8Ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166970732326-gmuj741b2usmucrdbpl0klr8fqj2drke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
