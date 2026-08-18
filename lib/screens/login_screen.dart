@@ -55,10 +55,10 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Spacer(flex: 3),
                 Container(
-                  width: 88,
-                  height: 88,
+                  width: 96,
+                  height: 96,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                    borderRadius: BorderRadius.circular(24),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.cyanGlow.withOpacity(0.35),
@@ -67,7 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                  child: ClipOval(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
                     child: Image.asset('assets/images/app_logo.png', fit: BoxFit.cover),
                   ),
                 ),
