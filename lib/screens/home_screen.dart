@@ -113,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          ClipOval(
+          ClipRRect(
+            borderRadius: BorderRadius.circular(9),
             child: Image.asset('assets/images/app_logo.png',
                 width: 34, height: 34, fit: BoxFit.cover),
           ),
