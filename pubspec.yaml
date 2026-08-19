@@ -69,7 +69,7 @@ flutter_launcher_icons:
 # Without this config, Android shows its own default WHITE screen here.
 flutter_native_splash:
   color: "#060B18"
-  image: assets/images/app_logo.png
+  image: assets/images/app_icon_adaptive.png
   android_12:
     color: "#060B18"
-    image: assets/images/app_logo.png
+    image: assets/images/app_icon_adaptive.png
