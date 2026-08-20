@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "166970732326-f1169b6gra6m925gg9svnu5u8cu5vhrr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.noorvpn.android",
+            "certificate_hash": "c313b36ccadc55488b6e4ea9d02316f4082beb0f"
+          }
+        },
+        {
           "client_id": "166970732326-h1d4649fm3vhkbmbva7544ecvf5dpksf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
