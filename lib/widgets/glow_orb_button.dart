@@ -4,11 +4,6 @@ import '../theme/app_theme.dart';
 
 enum VpnUiState { disconnected, connecting, connected }
 
-/// The signature element of Noor VPN: a glowing orb button with an
-/// orbiting ring — echoes the shield logo's rotating light band.
-/// - Disconnected: dim, static ring.
-/// - Connecting: ring spins fast, pulsing glow.
-/// - Connected: ring settles into a slow steady orbit, teal-cyan glow.
 class GlowOrbButton extends StatefulWidget {
   final VpnUiState state;
   final VoidCallback onTap;
@@ -18,7 +13,7 @@ class GlowOrbButton extends StatefulWidget {
     super.key,
     required this.state,
     required this.onTap,
-    this.size = 220,
+    this.size = 240,
   });
 
   @override
@@ -35,7 +30,7 @@ class _GlowOrbButtonState extends State<GlowOrbButton>
     super.initState();
     _orbitController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 6),
+      duration: const Duration(seconds: 8),
     )..repeat();
     _pulseController = AnimationController(
       vsync: this,
@@ -57,18 +52,18 @@ class _GlowOrbButtonState extends State<GlowOrbButton>
       case VpnUiState.connecting:
         return AppColors.cyanGlow;
       case VpnUiState.disconnected:
-        return AppColors.cyanGlow.withOpacity(0.5);
+        return AppColors.cyanGlow.withOpacity(0.6);
     }
   }
 
   double get _orbitSpeedFactor {
     switch (widget.state) {
       case VpnUiState.connecting:
-        return 4.0; // fast spin while negotiating tunnel
+        return 3.2;
       case VpnUiState.connected:
-        return 0.6; // slow calm orbit once secured
+        return 0.5;
       case VpnUiState.disconnected:
-        return 0.15;
+        return 0.18;
     }
   }
 
@@ -79,8 +74,8 @@ class _GlowOrbButtonState extends State<GlowOrbButton>
       child: AnimatedBuilder(
         animation: Listenable.merge([_orbitController, _pulseController]),
         builder: (context, _) {
-          final pulse = 0.85 + (_pulseController.value * 0.15);
-          final angle =
+          final pulse = 0.88 + (_pulseController.value * 0.12);
+          final baseAngle =
               _orbitController.value * 2 * math.pi * _orbitSpeedFactor;
 
           return SizedBox(
@@ -89,7 +84,6 @@ class _GlowOrbButtonState extends State<GlowOrbButton>
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Outer ambient glow
                 Container(
                   width: widget.size * pulse,
                   height: widget.size * pulse,
@@ -97,74 +91,111 @@ class _GlowOrbButtonState extends State<GlowOrbButton>
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        _glowColor.withOpacity(0.35),
+                        _glowColor.withOpacity(0.30),
                         _glowColor.withOpacity(0.0),
                       ],
                     ),
                   ),
                 ),
-                // Orbit ring (echoes the logo's rotating band)
-                Transform.rotate(
-                  angle: angle,
-                  child: Container(
-                    width: widget.size * 0.82,
-                    height: widget.size * 0.82,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: _glowColor.withOpacity(0.0),
-                      ),
-                      gradient: SweepGradient(
-                        colors: [
-                          _glowColor.withOpacity(0.0),
-                          _glowColor.withOpacity(0.9),
-                          _glowColor.withOpacity(0.0),
+
+                ...List.generate(3, (i) {
+                  final angle = baseAngle + (i * (2 * math.pi / 3));
+                  final radius = widget.size * 0.40;
+                  final dx = math.cos(angle) * radius;
+                  final dy = math.sin(angle) * radius;
+                  final particleOpacity = 0.35 + (i * 0.2);
+                  return Transform.translate(
+                    offset: Offset(dx, dy),
+                    child: Container(
+                      width: 7,
+                      height: 7,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _glowColor.withOpacity(particleOpacity + 0.4),
+                        boxShadow: [
+                          BoxShadow(
+                            color: _glowColor.withOpacity(0.8),
+                            blurRadius: 8,
+                            spreadRadius: 1,
+                          ),
                         ],
-                        stops: const [0.0, 0.15, 0.35],
                       ),
                     ),
-                    child: Center(
-                      child: Container(
-                        width: widget.size * 0.82 - 4,
-                        height: widget.size * 0.82 - 4,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.midnight,
-                        ),
-                      ),
+                  );
+                }),
+
+                Container(
+                  width: widget.size * 0.84,
+                  height: widget.size * 0.84,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: _glowColor.withOpacity(0.28),
+                      width: 1,
                     ),
                   ),
                 ),
-                // Core button
+
                 Container(
-                  width: widget.size * 0.62,
-                  height: widget.size * 0.62,
+                  width: widget.size * 0.64,
+                  height: widget.size * 0.64,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                    gradient: RadialGradient(
+                      center: const Alignment(-0.35, -0.4),
+                      radius: 1.1,
                       colors: [
-                        AppColors.panelLight,
+                        AppColors.panelLight.withOpacity(1.0),
                         AppColors.panel,
+                        AppColors.midnightDeep,
                       ],
+                      stops: const [0.0, 0.55, 1.0],
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: _glowColor.withOpacity(0.55),
-                        blurRadius: 24,
+                        color: _glowColor.withOpacity(0.6),
+                        blurRadius: 30,
                         spreadRadius: 1,
+                      ),
+                      const BoxShadow(
+                        color: Colors.black45,
+                        blurRadius: 12,
+                        offset: Offset(0, 6),
                       ),
                     ],
                     border: Border.all(
-                      color: _glowColor.withOpacity(0.8),
-                      width: 1.4,
+                      color: _glowColor.withOpacity(0.85),
+                      width: 1.6,
                     ),
                   ),
-                  child: Icon(
-                    Icons.shield_outlined,
-                    size: widget.size * 0.24,
-                    color: _glowColor,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
+                        top: widget.size * 0.06,
+                        left: widget.size * 0.08,
+                        child: Container(
+                          width: widget.size * 0.22,
+                          height: widget.size * 0.12,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.white.withOpacity(0.22),
+                                Colors.white.withOpacity(0.0),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.shield_outlined,
+                        size: widget.size * 0.24,
+                        color: _glowColor,
+                      ),
+                    ],
                   ),
                 ),
               ],
