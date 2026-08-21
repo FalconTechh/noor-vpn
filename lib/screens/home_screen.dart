@@ -36,14 +36,23 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  void _onOrbTap() {
+  void _onOrbTap() async {
     if (_state == VpnUiState.disconnected) {
       setState(() => _state = VpnUiState.connecting);
-      Future.delayed(const Duration(seconds: 2), () {
+      try {
+        await VpnService.instance.connect(_selectedServer);
         if (!mounted) return;
         setState(() => _state = VpnUiState.connected);
-      });
+      } catch (e) {
+        if (!mounted) return;
+        setState(() => _state = VpnUiState.disconnected);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Connection failed: $e')),
+        );
+      }
     } else if (_state == VpnUiState.connected) {
+      await VpnService.instance.disconnect();
+      if (!mounted) return;
       setState(() => _state = VpnUiState.disconnected);
       AdService.instance.showInterstitialAfterDisconnect();
     }
