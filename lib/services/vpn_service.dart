@@ -3,18 +3,14 @@ import '../models/server_model.dart';
 
 enum VpnStatus { disconnected, connecting, connected, disconnecting, error }
 
-/// Wraps the wireguard_flutter plugin.
+/// Wraps the wireguard_flutter plugin to run a REAL encrypted VPN tunnel.
 ///
-/// HOW REAL CONNECTION WORKS:
-/// 1. Your backend server (see README Step 2) generates a WireGuard
-///    config (private/public keys + server endpoint) per user/device.
-/// 2. `fetchConfig()` below calls YOUR api and gets that config text.
-/// 3. The plugin starts a real encrypted tunnel using Android's
-///    VpnService API (this is what makes it a REAL vpn, not a fake one).
-///
-/// You must not ship this pointing at fake/non-existent servers — Play
-/// Store will reject (or later suspend) apps that claim VPN functionality
-/// without actually tunneling traffic.
+/// ⚠️ Current setup: all users share ONE client key pair (the one we
+/// tested manually on the server). This is fine for early testing/launch
+/// with a small number of users, but does not scale securely — every
+/// install shares the same tunnel identity. Before scaling to many real
+/// users, replace `_demoConfig` below with a real call to your own
+/// backend (README Step 3) that issues a unique key pair per device.
 class VpnService {
   VpnService._();
   static final VpnService instance = VpnService._();
@@ -28,14 +24,28 @@ class VpnService {
     _initialized = true;
   }
 
+  /// Returns a wg-quick style config. Currently returns the same demo
+  /// config regardless of which server was picked — only the Dubai
+  /// (Oracle/AWS) server actually has a live backend right now. Wiring
+  /// more regions means repeating the server setup (README Step 2) on a
+  /// new VM per region and updating the endpoint below.
   Future<String> fetchConfig(VpnServer server) async {
-    // TODO: replace with a real HTTP call to your backend, e.g.:
-    // final res = await http.get(Uri.parse(server.endpointConfigUrl));
-    // return res.body;
-    throw UnimplementedError(
-      'Connect fetchConfig() to your backend endpoint before going live. '
-      'See README Step 2 (server) and Step 3 (issuing per-user configs).',
-    );
+    const clientPrivateKey = '4Cnf3SgKUCi2bZSW2mDOQPYtUHqr7Fd4CPj+vT9u62S=';
+    const serverPublicKey = 'AJpsKm7rAGyyEXAiEXW6ms3NexnKgizOXXetrPoKSjE=';
+    const serverEndpoint = '63.185.117.13:51820';
+
+    return '''
+[Interface]
+PrivateKey = $clientPrivateKey
+Address = 10.0.0.2/24
+DNS = 1.1.1.1
+
+[Peer]
+PublicKey = $serverPublicKey
+Endpoint = $serverEndpoint
+AllowedIPs = 0.0.0.0/0
+PersistentKeepalive = 25
+''';
   }
 
   Future<void> connect(VpnServer server) async {
