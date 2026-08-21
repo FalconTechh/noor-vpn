@@ -9,6 +9,7 @@ import '../services/ad_service.dart';
 import '../widgets/premium_sheet.dart';
 import 'servers_screen.dart';
 import 'settings_screen.dart';
+import '../services/vpn_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
