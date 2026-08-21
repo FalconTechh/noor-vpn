@@ -151,9 +151,9 @@ class _SplashScreenState extends State<SplashScreen>
                                 ],
                               ),
                               child: Image.asset(
-                                'assets/images/app_logo.png',
-                                fit: BoxFit.contain,
-                              ),
+                      'assets/images/app_logo_transparent.png',
+                      fit: BoxFit.contain,
+                    ),
                             ),
                           ],
                         ),
