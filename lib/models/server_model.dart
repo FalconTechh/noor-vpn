@@ -2,8 +2,8 @@ class VpnServer {
   final String id;
   final String country;
   final String city;
-  final String flagAsset; // e.g. assets/flags/ae.png
-  final String endpointConfigUrl; // your backend endpoint that returns the wg config
+  final String flagAsset;
+  final String endpointConfigUrl;
   final bool isPremium;
   int pingMs;
 
@@ -18,37 +18,31 @@ class VpnServer {
   });
 }
 
-/// Starter server list — Gulf-first since that's the target market.
-/// Replace endpointConfigUrl with YOUR real backend once servers are live
-/// (see README Step 2 & 3).
+/// ⚠️ IMPORTANT: All servers below currently route through the SAME single
+/// real backend (AWS Frankfurt, Germany) — see lib/services/vpn_service.dart.
+/// The country/city labels are cosmetic for now. This means:
+/// - The connection genuinely works (real encrypted tunnel) regardless of
+///   which one is picked.
+/// - The actual exit IP will always geolocate to Germany, no matter which
+///   label is selected — so content that checks IP location (e.g.
+///   region-locked streaming) will NOT match the picked label.
+/// To make labels truthful, set up a real server in each region (repeat
+/// README Step 2 on a new VM per region) and give each its own entry in
+/// vpn_service.dart's fetchConfig().
 final List<VpnServer> demoServers = [
   VpnServer(
-    id: 'ae-1',
-    country: 'United Arab Emirates',
-    city: 'Dubai',
-    flagAsset: 'assets/flags/ae.png',
-    endpointConfigUrl: 'https://api.noorvpn.app/config/ae-1',
-  ),
-  VpnServer(
-    id: 'sa-1',
-    country: 'Saudi Arabia',
-    city: 'Riyadh',
-    flagAsset: 'assets/flags/sa.png',
-    endpointConfigUrl: 'https://api.noorvpn.app/config/sa-1',
-  ),
-  VpnServer(
-    id: 'qa-1',
-    country: 'Qatar',
-    city: 'Doha',
-    flagAsset: 'assets/flags/qa.png',
-    endpointConfigUrl: 'https://api.noorvpn.app/config/qa-1',
-  ),
-  VpnServer(
-    id: 'de-1',
+    id: 'eu-1',
     country: 'Germany',
     city: 'Frankfurt',
     flagAsset: 'assets/flags/de.png',
-    endpointConfigUrl: 'https://api.noorvpn.app/config/de-1',
+    endpointConfigUrl: 'https://api.noorvpn.app/config/eu-1',
+  ),
+  VpnServer(
+    id: 'as-1',
+    country: 'Singapore',
+    city: 'Singapore',
+    flagAsset: 'assets/flags/sg.png',
+    endpointConfigUrl: 'https://api.noorvpn.app/config/as-1',
     isPremium: true,
   ),
   VpnServer(
