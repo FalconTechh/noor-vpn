@@ -34,18 +34,16 @@ class VpnService {
     const serverPublicKey = 'AJpsKm7rAGyyEXAiEXW6ms3NexnKgizOXXetrPoKSjE=';
     const serverEndpoint = '63.185.117.13:51820';
 
-    return '''
-[Interface]
-PrivateKey = $clientPrivateKey
-Address = 10.0.0.2/24
-DNS = 1.1.1.1
-
-[Peer]
-PublicKey = $serverPublicKey
-Endpoint = $serverEndpoint
-AllowedIPs = 0.0.0.0/0
-PersistentKeepalive = 25
-''';
+    return '[Interface]\n'
+        'PrivateKey = $clientPrivateKey\n'
+        'Address = 10.0.0.2/24\n'
+        'DNS = 1.1.1.1\n'
+        '\n'
+        '[Peer]\n'
+        'PublicKey = $serverPublicKey\n'
+        'Endpoint = $serverEndpoint\n'
+        'AllowedIPs = 0.0.0.0/0\n'
+        'PersistentKeepalive = 25\n';
   }
 
   Future<void> connect(VpnServer server) async {
