@@ -151,14 +151,8 @@ class _ServerTile extends StatelessWidget {
                   if (server.isVirtual)
                     Text('Exit IP may not match this location',
                         style: GoogleFonts.inter(
-                            fontSize: 10, color: AppColors.textSecondary.withOpacity(0.7))),
-                ],
-              ),
-            ),
-            if (locked)
-              const Icon(Icons.lock_outline, color: AppColors.textSecondary, size: 18)
-            else
-              const Icon(Icons.chevron_right, color: AppColors.textSecondary),
+                            fontSize: 10,
+                            color: AppColors.textSecondary.withOpacity(0.7))),
                 ],
               ),
             ),
