@@ -5,6 +5,7 @@ class VpnServer {
   final String flagAsset;
   final String endpointConfigUrl;
   final bool isPremium;
+  final bool isVirtual;
   int pingMs;
 
   VpnServer({
@@ -14,21 +15,22 @@ class VpnServer {
     required this.flagAsset,
     required this.endpointConfigUrl,
     this.isPremium = false,
+    this.isVirtual = false,
     this.pingMs = 0,
   });
 }
 
 /// ⚠️ IMPORTANT: All servers below currently route through the SAME single
 /// real backend (AWS Frankfurt, Germany) — see lib/services/vpn_service.dart.
-/// The country/city labels are cosmetic for now. This means:
-/// - The connection genuinely works (real encrypted tunnel) regardless of
-///   which one is picked.
-/// - The actual exit IP will always geolocate to Germany, no matter which
-///   label is selected — so content that checks IP location (e.g.
-///   region-locked streaming) will NOT match the picked label.
-/// To make labels truthful, set up a real server in each region (repeat
-/// README Step 2 on a new VM per region) and give each its own entry in
-/// vpn_service.dart's fetchConfig().
+/// Only ONE physical server exists right now.
+///
+/// `isVirtual: true` marks locations where the exit IP does NOT match the
+/// label (a common industry practice, but must be disclosed — see the
+/// "Virtual location" badge shown in servers_screen.dart). Undisclosed
+/// mismatched labels risk Google Play's "Deceptive Behavior" policy.
+/// To make a location truthful (non-virtual), set up a real server
+/// physically in that region (repeat README Step 2) and give it its own
+/// entry in vpn_service.dart's fetchConfig().
 final List<VpnServer> demoServers = [
   VpnServer(
     id: 'eu-1',
@@ -44,6 +46,25 @@ final List<VpnServer> demoServers = [
     flagAsset: 'assets/flags/sg.png',
     endpointConfigUrl: 'https://api.noorvpn.app/config/as-1',
     isPremium: true,
+    isVirtual: true,
+  ),
+  VpnServer(
+    id: 'as-2',
+    country: 'Japan',
+    city: 'Tokyo',
+    flagAsset: 'assets/flags/jp.png',
+    endpointConfigUrl: 'https://api.noorvpn.app/config/as-2',
+    isPremium: true,
+    isVirtual: true,
+  ),
+  VpnServer(
+    id: 'as-3',
+    country: 'India',
+    city: 'Mumbai',
+    flagAsset: 'assets/flags/in.png',
+    endpointConfigUrl: 'https://api.noorvpn.app/config/as-3',
+    isPremium: true,
+    isVirtual: true,
   ),
   VpnServer(
     id: 'us-1',
@@ -52,5 +73,6 @@ final List<VpnServer> demoServers = [
     flagAsset: 'assets/flags/us.png',
     endpointConfigUrl: 'https://api.noorvpn.app/config/us-1',
     isPremium: true,
+    isVirtual: true,
   ),
 ];
