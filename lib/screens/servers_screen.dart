@@ -123,12 +123,42 @@ class _ServerTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(server.city,
-                      style: GoogleFonts.inter(
-                          color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+                  Row(
+                    children: [
+                      Text(server.city,
+                          style: GoogleFonts.inter(
+                              color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+                      if (server.isVirtual) ...[
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: AppColors.textSecondary.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text('VIRTUAL',
+                              style: GoogleFonts.inter(
+                                  fontSize: 9,
+                                  color: AppColors.textSecondary,
+                                  fontWeight: FontWeight.w700)),
+                        ),
+                      ],
+                    ],
+                  ),
                   Text(server.country,
                       style: GoogleFonts.inter(
                           fontSize: 12, color: AppColors.textSecondary)),
+                  if (server.isVirtual)
+                    Text('Exit IP may not match this location',
+                        style: GoogleFonts.inter(
+                            fontSize: 10, color: AppColors.textSecondary.withOpacity(0.7))),
+                ],
+              ),
+            ),
+            if (locked)
+              const Icon(Icons.lock_outline, color: AppColors.textSecondary, size: 18)
+            else
+              const Icon(Icons.chevron_right, color: AppColors.textSecondary),
                 ],
               ),
             ),
