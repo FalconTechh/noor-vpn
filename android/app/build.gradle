@@ -45,10 +45,12 @@ android {
 
     buildTypes {
         release {
-            // Abhi debug signing use ho rahi hai taaki build turant chal jaaye.
-            // Play Store par upload karne se pehle proper release signing
-            // (Codemagic > Code signing) setup karni hogi — README Step 6.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+            // WireGuard plugin ka native code R8/code-shrinking se toot jaata
+            // hai (obfuscated class names jaisa "z2.b" wali error), isliye
+            // release build me shrinking/minify band rakhi hai.
+            minifyEnabled false
+            shrinkResources false
         }
     }
 }
