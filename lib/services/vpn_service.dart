@@ -62,5 +62,4 @@ PersistentKeepalive = 25
     await _wireguard.stopVpn();
   }
 
-  Stream<VpnState> get stateStream => _wireguard.vpnStageSnapshot;
 }
