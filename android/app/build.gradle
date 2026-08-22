@@ -17,10 +17,19 @@ def flutterVersionCode = localProperties.getProperty("flutter.versionCode") ?: "
 def flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.0"
 
 android {
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("CM_KEYSTORE_PATH") ?: "debug.keystore")
+            storePassword System.getenv("CM_KEYSTORE_PASSWORD") ?: "android"
+            keyAlias System.getenv("CM_KEY_ALIAS") ?: "androiddebugkey"
+            keyPassword System.getenv("CM_KEY_PASSWORD") ?: "android"
+        }
+    }
+
     namespace "app.noorvpn.android"
     compileSdk 36
     ndkVersion flutter.ndkVersion
-
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
