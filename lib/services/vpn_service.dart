@@ -15,8 +15,8 @@ class VpnService {
   }
 
   Future<String> fetchConfig(VpnServer server) async {
-    const clientPrivateKey = '4Cnf38qKUCI2bZSW2mDCQPYtUHqr7FdaCPj+vT9u628=';
-    const serverPublicKey = 'RJpsKa7rAGyyZXAiZXW6mu3NsxnKgjzOXXetrPoKzjE=';
+    const clientPrivateKey = '4Cnf38qKUCi2bZSW2mDCQPYtUHqr7FdaCPj+vT9u628=';
+    const serverPublicKey = 'RJpsKa7rAGyyZXAiZXW6mu3NsxnKgjzOXXetzPoKzjE=';
     const serverEndpoint = '63.185.117.13:51820';
 
     return '[Interface]\n'
